@@ -1,0 +1,13 @@
+{
+  "name": "webCamstreamServer",
+  "description": "Streaming ffmpeg to HTML5 canvas",
+  "author": "",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=8.0.0 <11.0.0"
+  }
+}
