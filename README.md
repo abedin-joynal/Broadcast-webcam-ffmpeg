@@ -1,4 +1,4 @@
-# RTL-Client
+# Broadcast PC Webcam feed
 This project allows to remotely control one or many android devices and broadcasts webcam feed to the browser using adb, ffmpeg, node.js, socket.io and express. 
 
 # System Requirements
