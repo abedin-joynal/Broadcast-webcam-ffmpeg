@@ -3,8 +3,10 @@
   "description": "Streaming ffmpeg to HTML5 canvas",
   "author": "",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "node-adb": "^0.1.6",
     "socket.io": "^2.2.0"
   },
   "engines": {

@@ -1,58 +1,40 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>Stream Client</title>
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css">
-		<link rel="stylesheet" href="/css/interface.css">
-		<script src="/socket.io/socket.io.js"></script>	
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	</head>
-  	<body>
-		<div class="container-fluid pt-5">
+    <head>
+			<!-- Required meta tags -->
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<title>Stream Client</title>
+			<!-- Bootstrap CSS -->
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css">
+			<link rel="stylesheet" href="/css/interface.css">
+			<script src="/socket.io/socket.io.js"></script>	
+			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </head>
+    <body>
+	    <div class="container-fluid pt-5">
+			
 			<div class="row">
-				<div class="col-12 text-center pb-5" >
-					<button type="button" class="btn btn-default connect_btn" data-key="connect" data-first-attempt="true">
-						Connect
-					</button>
-					<br><br> Status : <small class="text-danger">Disconnected</small>
-				</div>
+					<div class="col-12 text-center pb-5" >
+							<button type="button" class="btn btn-default connect_btn" data-key="connect" data-first-attempt="true">
+								Connect
+							</button>
+							<br><br>Status : <small class="text-danger">Disconnected</small>
+					</div>
 			</div>
 
 			<div class="row">
 				<div class="col-6 text-right">
-					<canvas class="shadow" id="videostream" width="640" height="480"></canvas>
+						<canvas class="shadow" id="videostream" width="640" height="480"></canvas>
 				</div>
 				<div class="col-6">
 					<div class="col-8">
 						<div id="interface" class="shadow p-5" style="padding: 15px;">
 							<div class="row">
 								<div class="col-12 text-center pb-4" >
-									asdfasdfada
-									<div class="dropdown">
-										<button class="btn btn-secondary dropdown-toggle" type="button" id="devicedropdownButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											Select Device
-										</button>
-										<div class="dropdown-menu" id="device-list" aria-labelledby="devicedropdownButton">
-											<a class="dropdown-item" href="javascript:void(0)" data-value="">Select Device</a>
-											<%
-												if(devices) { %>
-													<% devices.forEach(function(device){ %>
-														<a class="dropdown-item" href="javascript:void(0)"><%= device.serial %></a>
-													<% })%>
-											<%	}
-											%>
-										</div>
-									</div>
-								</div>
-							</div>	
-							<div class="row">
-								<div class="col-12 text-center pb-4" >
-									<button type="button" class="btn btn-default btn-circle int_key text-success" data-key="223"><i class="fa fa-power-off"></i></i></button>
+										<button type="button" class="btn btn-default btn-circle int_key text-success" data-key="223"><i class="fa fa-power-off"></i></i></button>
 								</div>
 							</div>	
 							<div class="row">
@@ -83,7 +65,7 @@
 							</div>
 							<div class="row m-2 mt-5">
 								<div class="col-12 text-center">
-									<div class="row">
+									<div class="row" style="">
 										<div class="col-4">
 											<div class=""><button type="button" class="btn btn-default btn-circle int_key" data-key="4"><i class="fa fa-angle-left"></i></button></div>
 										</div>
@@ -97,10 +79,9 @@
 								</div>
 							</div>	
 						</div>	
-					  </div>	
-				  </div>
+					</div>	
 				</div>
-			</div>	
+			</div>
 		</div>
 
 		<script>
@@ -108,18 +89,17 @@
 			var context = canvas.getContext('2d');
 
 			$(document).ready(function() {
-				/* Disable Buttons on application start */
-				$(".int_key").attr("disabled", "true");
-				$("#devicedropdownButton").attr("disabled", true);
 
-				$("#device-list").on('click', 'a', function() {
-					let value = $(this).attr("data-value");
-					if(value == "") {
-						$(".int_key").attr("disabled", "true");
-					} else {
-						$(".int_key").removeAttr("disabled");
-					}
-				});
+				function clearCanvas() {
+					setTimeout(function() {
+						var canvas1 = document.getElementById("videostream");
+						context = canvas1.getContext("2d");
+						context.save();
+						context.setTransform(1, 0, 0, 1, 0, 0);
+						context.clearRect(0, 0, canvas1.width, canvas1.height);
+						context.restore();
+					}, 500);
+				}
 
 				$(document).on('click', '.connect_btn', function() {
 					let key = $(this).attr('data-key');
@@ -129,35 +109,27 @@
 							socketConnect();
 							$(this).attr('data-first-attempt', "false");
 						} else {
-							if(socket.io.connecting.indexOf(socket) === -1) {
+							if(socket.io.connecting.indexOf(socket) === -1){
 								socket.connect();
 							}
 						}	
 						$(this).attr('data-key', 'disconnect');
 						$(this).text('Disconnect');
 						$(this).parent().find('small').text('Connected').removeClass('text-danger').addClass('text-success');
-						// $(".int_key").removeAttr("disabled");
-						$("#devicedropdownButton").removeAttr("disabled");
 					} else if(key == 'disconnect') {
 						socket.emit('forceDisconnect');
 						$(this).attr('data-key', 'connect');
 						$(this).text('Connect');
 						$(this).parent().find('small').text('Disconnected').removeClass('text-success').addClass('text-danger');;
 						clearCanvas();
-						$("#devicedropdownButton").attr("disabled", true);
-						$("#devicedropdownButton").val("");
-						$("#devicedropdownButton").text("Select Device");
-						$(".int_key").attr("disabled", "true");
 					}
 				});
 
 				$(document).on('click', '.int_key', function() {
 					let key = $(this).attr('data-key');
-
+					
 					if(socket.connected) {
-						let device = $("#devicedropdownButton").attr("value");
-						let event_data = {"key" : key, "device" : device};
-						socket.emit('client_event', event_data);
+						socket.emit('client_event', key);
 					}
 
 					if(key == '223') {
@@ -201,28 +173,7 @@
 						}
 					} catch(e){ }
 				});
-			}
-
-			function clearCanvas() {
-				setTimeout(function() {
-					var canvas1 = document.getElementById("videostream");
-					context = canvas1.getContext("2d");
-					context.save();
-					context.setTransform(1, 0, 0, 1, 0, 0);
-					context.clearRect(0, 0, canvas1.width, canvas1.height);
-					context.restore();
-				}, 500);
-			}
-
-			$(function(){
-				$("#device-list").on('click', 'a', function() {
-					console.log($(this).text());
-					$("#devicedropdownButton").text($(this).text());
-					$("#devicedropdownButton").val($(this).text());
-				});
-			});
+		  }
 		</script>
-		<script src="js/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  	</body>
+  </body>
 </html>
